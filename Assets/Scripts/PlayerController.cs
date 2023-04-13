@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
 
     public void Loop()
     {
+        TrafficSpawner.ResetAllSpawners();
+
         var offset = transform.position - entrancePortal.transform.position;
         transform.position = exitPortal.transform.position + offset;
     }
