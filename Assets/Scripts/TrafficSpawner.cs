@@ -2,33 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TrafficSpawner : MonoBehaviour
 {
     public List<GameObject> Traffic = new List<GameObject>();
+    
+    private static List<TrafficSpawner> trafficSpawners = new List<TrafficSpawner>();
+    private static TrafficSpawner activeSpawner = null;
+
+    private const float timeBetweenSpawnsLow = 1f;
+    private const float timeBetweenSpawnsHigh = 3f;
+    private static float timeBetweenSpawns = 0f;
+    private static float timeOfLastSpawn = 0f;
 
     private PlayerController playerController;
-    private bool turnedOn = true;
-    private bool willSpawn = true;
+    private bool isTurnedOn = true;
     private float requiredPlayerDistance = 20f;
-    private float timeBetweenSpawns = 5f;
-    private float timeOfLastSpawn = 0f;
     private List<Traffic> registeredTraffic = new List<Traffic>();
-    private static List<TrafficSpawner> trafficSpawners = new List<TrafficSpawner>();
 
     private void Awake()
     {
         trafficSpawners.Add(this);
+        RandomizeSpawn();
+
         playerController = FindAnyObjectByType<PlayerController>();
-        timeOfLastSpawn -= timeBetweenSpawns;
     }
 
     private void Update()
     {
+        var isActiveSpawner = activeSpawner == this;
         var distanceToPlayer = (playerController.transform.position - transform.position).magnitude;
-        willSpawn = (distanceToPlayer > requiredPlayerDistance) && ((timeOfLastSpawn + timeBetweenSpawns) <= Time.time);
-        if (turnedOn && willSpawn)
+        var isPlayerDistanceIsEnough = distanceToPlayer > requiredPlayerDistance;
+        var timeOfNextSpawn = timeOfLastSpawn + timeBetweenSpawns;
+        var isSpawnDelayEnough = timeOfNextSpawn <= Time.time;
+
+        if (isTurnedOn && isActiveSpawner && isPlayerDistanceIsEnough && isSpawnDelayEnough)
         {
             SpawnTraffic();
         }
@@ -39,14 +49,22 @@ public class TrafficSpawner : MonoBehaviour
         trafficSpawners.Remove(this);
     }
 
+    private static void RandomizeSpawn()
+    {
+        var index = Random.Range(0, trafficSpawners.Count);
+        activeSpawner = trafficSpawners[index];
+        timeBetweenSpawns = Random.Range(timeBetweenSpawnsLow, timeBetweenSpawnsHigh);
+    }
+
     private void SpawnTraffic()
     {
+        timeOfLastSpawn = Time.time;
         var index = Random.Range(0, Traffic.Count - 1);
         var obj = Instantiate(Traffic[index], transform.position, Quaternion.LookRotation(transform.forward), null);
         var traffic = obj.GetComponent<Traffic>();
         traffic.RegisterSpawner(this);
         RegisterTraffic(traffic);
-        timeOfLastSpawn = Time.time;
+        RandomizeSpawn();
     }
 
     private void RegisterTraffic(Traffic traffic)
@@ -61,9 +79,9 @@ public class TrafficSpawner : MonoBehaviour
 
     public void Reset()
     {
-        turnedOn = false;
+        isTurnedOn = false;
         registeredTraffic.ForEach(t => Destroy(t.gameObject)) ;
-        turnedOn = true;
+        isTurnedOn = true;
     }
 
     public static void ResetAllSpawners()
