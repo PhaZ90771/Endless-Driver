@@ -5,7 +5,9 @@ using UnityEngine;
 public class FollowPlayer : MonoBehaviour
 {
     public GameObject player;
-    private Vector3 offset = new Vector3(0, 5, -7);
+    private Vector3 thirdPersonOffset = new Vector3(0, 5, -7);
+    private Vector3 firstPersonOffset = new Vector3(0, 2, 1);
+    private VIEWMODE viewMode = VIEWMODE.THIRDPERSON;
     private PlayerController controller;
 
     private void Awake()
@@ -17,9 +19,24 @@ public class FollowPlayer : MonoBehaviour
         controller = player.GetComponent<PlayerController>();
     }
 
+    private void Update()
+    {
+        var swapView = Input.GetButtonDown("SwapView");
+        if (swapView)
+        {
+            viewMode = (viewMode == VIEWMODE.THIRDPERSON) ? VIEWMODE.FIRSTTPERSON : VIEWMODE.THIRDPERSON;
+        }
+    }
+
     private void LateUpdate()
     {
+        var offset = viewMode == VIEWMODE.THIRDPERSON ? thirdPersonOffset : firstPersonOffset;
         transform.position = player.transform.position + offset;
+
+        var rotationX = viewMode == VIEWMODE.THIRDPERSON ? 15f : 0f;
+        var rotationY = viewMode == VIEWMODE.THIRDPERSON ? 0f : controller.transform.rotation.eulerAngles.y;
+        var rotationZ = viewMode == VIEWMODE.THIRDPERSON ? 0f : controller.transform.rotation.eulerAngles.z;
+        transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,4 +47,10 @@ public class FollowPlayer : MonoBehaviour
             controller.Loop();
         }
     }
+
+    private enum VIEWMODE
+    {
+        THIRDPERSON,
+        FIRSTTPERSON
+    };
 }
