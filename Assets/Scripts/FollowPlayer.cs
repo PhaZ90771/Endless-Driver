@@ -30,13 +30,17 @@ public class FollowPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        var offset = viewMode == VIEWMODE.THIRDPERSON ? thirdPersonOffset : firstPersonOffset;
-        transform.position = player.transform.position + offset;
-
-        var rotationX = viewMode == VIEWMODE.THIRDPERSON ? 15f : 0f;
-        var rotationY = viewMode == VIEWMODE.THIRDPERSON ? 0f : controller.transform.rotation.eulerAngles.y;
-        var rotationZ = viewMode == VIEWMODE.THIRDPERSON ? 0f : controller.transform.rotation.eulerAngles.z;
-        transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
+        var offset = 
+            viewMode == VIEWMODE.THIRDPERSON ? 
+            thirdPersonOffset : 
+            firstPersonOffset;
+        var rotation = 
+            viewMode == VIEWMODE.THIRDPERSON ? 
+            Quaternion.Euler(15f, 0f, 0f) : 
+            Quaternion.LookRotation(controller.transform.forward);
+        transform.rotation = rotation;
+        transform.position = player.transform.position;
+        transform.Translate(offset);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -47,7 +51,7 @@ public class FollowPlayer : MonoBehaviour
             controller.Loop();
         }
     }
-
+    
     private enum VIEWMODE
     {
         THIRDPERSON,
