@@ -10,11 +10,6 @@ public class Traffic : MonoBehaviour
     private void Update()
     {
         transform.Translate(speed * Time.deltaTime * Vector3.forward);
-
-        if (transform.position.y < -100f)
-        {
-            Destroy(this.gameObject);
-        }
     }
 
     private void OnDestroy()
