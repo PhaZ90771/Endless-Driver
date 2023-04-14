@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadGameMode : MonoBehaviour
+public class GameModePicker : MonoBehaviour
 {
-    public void LoadSingleplayer()
+    private GameModeLoader gameModeLoader;
+
+    private void Awake()
     {
-        // Load Here
+        gameModeLoader = FindAnyObjectByType<GameModeLoader>();
+    }
+
+    public void Singleplayer()
+    {
+        gameModeLoader.gameMode = GameModeLoader.GAMEMODE.Singleplayer;
         LoadLevel();
     }
-    public void LoadLocalMultiplayer()
+    public void LocalMultiplayer()
     {
-        // Load Here
+        gameModeLoader.gameMode = GameModeLoader.GAMEMODE.Multiplayer;
         LoadLevel();
     }
 
     private void LoadLevel()
     {
-        // Load Here
         SceneManager.LoadScene(1);
     }
 }

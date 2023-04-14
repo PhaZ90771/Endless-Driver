@@ -10,22 +10,20 @@ public class FollowPlayer : MonoBehaviour
     private VIEWMODE viewMode = VIEWMODE.THIRDPERSON;
     private PlayerController controller;
 
-    private void Awake()
-    {
-        if (!player)
-        {
-            Debug.LogError("Missing reference to player GameObject");
-        }
-        controller = player.GetComponent<PlayerController>();
-    }
-
     private void Update()
     {
-        var playerCode = controller.player == PlayerController.PLAYER.PlayerOne ? "P1" : "P2";
-        var swapView = Input.GetButtonDown("Swap View " + playerCode);
-        if (swapView)
+        if (!controller)
         {
-            viewMode = (viewMode == VIEWMODE.THIRDPERSON) ? VIEWMODE.FIRSTTPERSON : VIEWMODE.THIRDPERSON;
+            controller = player?.GetComponent<PlayerController>();
+        }
+        else
+        {
+            var playerCode = controller.player == PlayerController.PLAYER.PlayerOne ? "P1" : "P2";
+            var swapView = Input.GetButtonDown("Swap View " + playerCode);
+            if (swapView)
+            {
+                viewMode = (viewMode == VIEWMODE.THIRDPERSON) ? VIEWMODE.FIRSTTPERSON : VIEWMODE.THIRDPERSON;
+            }
         }
     }
 

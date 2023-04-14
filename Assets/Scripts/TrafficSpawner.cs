@@ -26,21 +26,26 @@ public class TrafficSpawner : MonoBehaviour
     {
         trafficSpawners.Add(this);
         RandomizeSpawn();
-
-        playerController = FindAnyObjectByType<PlayerController>();
     }
 
     private void Update()
     {
-        var isActiveSpawner = activeSpawner == this;
-        var distanceToPlayer = (playerController.transform.position - transform.position).magnitude;
-        var isPlayerDistanceIsEnough = distanceToPlayer > requiredPlayerDistance;
-        var timeOfNextSpawn = timeOfLastSpawn + timeBetweenSpawns;
-        var isSpawnDelayEnough = timeOfNextSpawn <= Time.time;
-
-        if (isTurnedOn && isActiveSpawner && isPlayerDistanceIsEnough && isSpawnDelayEnough)
+        if (!playerController)
         {
-            SpawnTraffic();
+            playerController = FindAnyObjectByType<PlayerController>();
+        }
+        else
+        {
+            var isActiveSpawner = activeSpawner == this;
+            var distanceToPlayer = (playerController.transform.position - transform.position).magnitude;
+            var isPlayerDistanceIsEnough = distanceToPlayer > requiredPlayerDistance;
+            var timeOfNextSpawn = timeOfLastSpawn + timeBetweenSpawns;
+            var isSpawnDelayEnough = timeOfNextSpawn <= Time.time;
+
+            if (isTurnedOn && isActiveSpawner && isPlayerDistanceIsEnough && isSpawnDelayEnough)
+            {
+                SpawnTraffic();
+            }
         }
     }
 
