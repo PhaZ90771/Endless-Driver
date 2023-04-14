@@ -5,7 +5,7 @@ using UnityEngine;
 public class FollowPlayer : MonoBehaviour
 {
     public GameObject player;
-    private Vector3 thirdPersonOffset = new Vector3(0, 5, -7);
+    private Vector3 thirdPersonOffset = new Vector3(0, 7, -10);
     private Vector3 firstPersonOffset = new Vector3(0, 2, 1);
     private VIEWMODE viewMode = VIEWMODE.THIRDPERSON;
     private PlayerController controller;
@@ -41,7 +41,14 @@ public class FollowPlayer : MonoBehaviour
             Quaternion.LookRotation(controller.transform.forward);
         transform.rotation = rotation;
         transform.position = player.transform.position;
-        transform.Translate(offset);
+        if (viewMode == VIEWMODE.THIRDPERSON)
+        {
+            transform.position += offset;
+        }
+        else
+        {
+            transform.Translate(offset);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
