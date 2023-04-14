@@ -64,7 +64,7 @@ public class TrafficSpawner : MonoBehaviour
     private void SpawnTraffic()
     {
         timeOfLastSpawn = Time.time;
-        var index = Random.Range(0, Traffic.Count - 1);
+        var index = Random.Range(0, Traffic.Count);
         var obj = Instantiate(Traffic[index], transform.position, Quaternion.LookRotation(transform.forward), null);
         var traffic = obj.GetComponent<Traffic>();
         traffic.RegisterSpawner(this);

@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7237761080036829303
 MonoBehaviour:
@@ -45,4 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObstaclePrefabs:
+  - {fileID: 1237909918784290659, guid: 5b618d2303968a44bb717da2a4bcff8e, type: 3}
+  - {fileID: 304071303229785030, guid: 422389066589f034cbbca4537e92e797, type: 3}
   - {fileID: 2362264720379379698, guid: ca2e6ece9596c0c4ba8e0eefb4d313da, type: 3}

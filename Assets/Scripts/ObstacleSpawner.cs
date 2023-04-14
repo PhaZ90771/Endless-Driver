@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
@@ -27,11 +28,13 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void SpawnObstacle()
     {
-        var index = Random.Range(0, ObstaclePrefabs.Count - 1);
+        var index = Random.Range(0, ObstaclePrefabs.Count);
         var obj = Instantiate(ObstaclePrefabs[index], transform.position, Quaternion.LookRotation(transform.forward), null);
-        var obstacle = obj.GetComponent<Obstacle>();
-        obstacle.RegisterSpawner(this);
-        RegisterObstacle(obstacle);
+        var obstacles = obj.GetComponentsInChildren<Obstacle>().ToList();
+        obstacles.ForEach(o => o.RegisterSpawner(this));
+        obstacles.ForEach(o => RegisterObstacle(o));
+        var obstacleSet = obj.GetComponent<ObstacleSet>();
+        obstacleSet?.Unload();
     }
 
     private void RegisterObstacle(Obstacle obstacle)
