@@ -120,3 +120,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Traffic:
   - {fileID: 1212373292070132284, guid: 280045bd0770a6f4dbe5303530031dba, type: 3}
+  - {fileID: 8497843408573365098, guid: 9eca6b7c68502274d91d7710525463f6, type: 3}
+  - {fileID: 5001744606822864671, guid: 22a54dd22723a11409de4bd91a723f79, type: 3}
+  - {fileID: 3850463319744292671, guid: 3b49450a26308f6409ceb51a95a86b8f, type: 3}
