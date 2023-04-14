@@ -21,7 +21,8 @@ public class FollowPlayer : MonoBehaviour
 
     private void Update()
     {
-        var swapView = Input.GetButtonDown("SwapView");
+        var playerCode = controller.player == PlayerController.PLAYER.PlayerOne ? "P1" : "P2";
+        var swapView = Input.GetButtonDown("Swap View " + playerCode);
         if (swapView)
         {
             viewMode = (viewMode == VIEWMODE.THIRDPERSON) ? VIEWMODE.FIRSTTPERSON : VIEWMODE.THIRDPERSON;

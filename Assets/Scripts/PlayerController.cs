@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public PLAYER player = PLAYER.PlayerOne;
+
     private readonly float speed = 20.0f;
     private readonly float turnSpeed = 45.0f;
     private float horizontalInput;
@@ -19,8 +21,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        forwardInput = Input.GetAxis("Vertical");
+        var playerCode = player == PlayerController.PLAYER.PlayerOne ? "P1" : "P2";
+        horizontalInput = Input.GetAxis("Horizontal " + playerCode);
+        forwardInput = Input.GetAxis("Vertical " + playerCode);
 
         transform.Translate(forwardInput * speed * Time.deltaTime * Vector3.forward);
         transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
@@ -32,5 +35,11 @@ public class PlayerController : MonoBehaviour
 
         var offset = transform.position - entrancePortal.transform.position;
         transform.position = exitPortal.transform.position + offset;
+    }
+
+    public enum PLAYER
+    {
+        PlayerOne,
+        PlayerTwo
     }
 }
