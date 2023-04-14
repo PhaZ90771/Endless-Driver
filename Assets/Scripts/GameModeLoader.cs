@@ -12,6 +12,8 @@ public class GameModeLoader : MonoBehaviour
     public GameObject PlayerCamera;
     public GAMEMODE gameMode = GAMEMODE.Singleplayer;
 
+    private ReloadGame reloadGame;
+
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -36,8 +38,9 @@ public class GameModeLoader : MonoBehaviour
     public void LoadSingleplayer()
     {
         var player = Instantiate(Singleplayer, null);
-        var camera = Instantiate(PlayerCamera, null).GetComponent<FollowPlayer>();
-        camera.player = player;
+        var camera = Instantiate(PlayerCamera, null).GetComponent<Camera>();
+        var followPlayer = camera.GetComponent<FollowPlayer>();
+        followPlayer.player = player;
 
         Destroy(this.gameObject);
     }
@@ -45,12 +48,21 @@ public class GameModeLoader : MonoBehaviour
     public void LoadMultiplayer()
     {
         var playerOne = Instantiate(MultiplayerPlayerOne, null);
-        var cameraOne = Instantiate(PlayerCamera, null).GetComponent<FollowPlayer>();
-        cameraOne.player = playerOne;
+        var cameraOne = Instantiate(PlayerCamera, null).GetComponent<Camera>();
+        var cameraOneRect = cameraOne.rect;
+        cameraOneRect.width = 0.5f;
+        cameraOne.rect = cameraOneRect;
+        var followPlayerOne = cameraOne.GetComponent<FollowPlayer>();
+        followPlayerOne.player = playerOne;
 
         var playerTwo = Instantiate(MultiplayerPlayerTwo, null);
-        var cameraTwo = Instantiate(PlayerCamera, null).GetComponent<FollowPlayer>();
-        cameraTwo.player = playerTwo;
+        var cameraTwo = Instantiate(PlayerCamera, null).GetComponent<Camera>();
+        var cameraTwoRect = cameraOne.rect;
+        cameraTwoRect.x = 0.5f;
+        cameraTwoRect.width = 0.5f;
+        cameraTwo.rect = cameraTwoRect;
+        var followPlayerTwo = cameraTwo.GetComponent<FollowPlayer>();
+        followPlayerTwo.player = playerTwo;
 
         Destroy(this.gameObject);
     }
