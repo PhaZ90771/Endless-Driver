@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public PLAYER player = PLAYER.PlayerOne;
     public GameModeLoader.GAMEMODE gameMode;
 
+    private static bool IsGameOver = false;
+
     private readonly float speed = 20.0f;
     private readonly float turnSpeed = 45.0f;
     private float horizontalInput;
@@ -49,19 +51,23 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy()
     {
         followPlayer.player = null;
-        if (gameMode == GameModeLoader.GAMEMODE.Singleplayer)
+        if (!IsGameOver)
         {
-            SceneManager.LoadScene(2);
-        }
-        else
-        {
-            if (player == PLAYER.PlayerOne)
+            IsGameOver = true;
+            if (gameMode == GameModeLoader.GAMEMODE.Singleplayer)
             {
-                SceneManager.LoadScene(3);
+                SceneManager.LoadScene(2);
             }
             else
             {
-                SceneManager.LoadScene(4);
+                if (player == PLAYER.PlayerOne)
+                {
+                    SceneManager.LoadScene(3);
+                }
+                else
+                {
+                    SceneManager.LoadScene(4);
+                }
             }
         }
     }
