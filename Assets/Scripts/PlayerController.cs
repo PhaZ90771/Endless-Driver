@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public PLAYER player = PLAYER.PlayerOne;
+    public GameModeLoader.GAMEMODE gameMode;
 
     private readonly float speed = 20.0f;
     private readonly float turnSpeed = 45.0f;
@@ -48,7 +49,21 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy()
     {
         followPlayer.player = null;
-        SceneManager.LoadScene(0);
+        if (gameMode == GameModeLoader.GAMEMODE.Singleplayer)
+        {
+            SceneManager.LoadScene(2);
+        }
+        else
+        {
+            if (player == PLAYER.PlayerOne)
+            {
+                SceneManager.LoadScene(3);
+            }
+            else
+            {
+                SceneManager.LoadScene(4);
+            }
+        }
     }
 
     public enum PLAYER

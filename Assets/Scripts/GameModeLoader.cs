@@ -41,6 +41,8 @@ public class GameModeLoader : MonoBehaviour
         var camera = Instantiate(PlayerCamera, null).GetComponent<Camera>();
         var followPlayer = camera.GetComponent<FollowPlayer>();
         followPlayer.player = player;
+        var controllerPlayer = player.GetComponent<PlayerController>();
+        controllerPlayer.gameMode = gameMode;
 
         Destroy(this.gameObject);
     }
@@ -54,6 +56,8 @@ public class GameModeLoader : MonoBehaviour
         cameraOne.rect = cameraOneRect;
         var followPlayerOne = cameraOne.GetComponent<FollowPlayer>();
         followPlayerOne.player = playerOne;
+        var controllerPlayerOne = playerOne.GetComponent<PlayerController>();
+        controllerPlayerOne.gameMode = gameMode;
 
         var playerTwo = Instantiate(MultiplayerPlayerTwo, null);
         var cameraTwo = Instantiate(PlayerCamera, null).GetComponent<Camera>();
@@ -63,6 +67,8 @@ public class GameModeLoader : MonoBehaviour
         cameraTwo.rect = cameraTwoRect;
         var followPlayerTwo = cameraTwo.GetComponent<FollowPlayer>();
         followPlayerTwo.player = playerTwo;
+        var controllerPlayerTwo = playerTwo.GetComponent<PlayerController>();
+        controllerPlayerTwo.gameMode = gameMode;
 
         Destroy(this.gameObject);
     }
