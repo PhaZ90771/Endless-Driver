@@ -26,6 +26,11 @@ public class ObstacleSpawner : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, Vector3.one * 5f);
+    }
+
     private void SpawnObstacle()
     {
         var index = Random.Range(0, ObstaclePrefabs.Count);
