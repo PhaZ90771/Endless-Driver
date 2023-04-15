@@ -15,6 +15,10 @@ public class FollowPlayer : MonoBehaviour
         if (!controller)
         {
             controller = player?.GetComponent<PlayerController>();
+            if (controller)
+            {
+                controller.RegisterCameraFollow(this);
+            }
         }
         else
         {
@@ -29,32 +33,38 @@ public class FollowPlayer : MonoBehaviour
 
     private void LateUpdate()
     {
-        var offset = 
-            viewMode == VIEWMODE.THIRDPERSON ? 
-            thirdPersonOffset : 
-            firstPersonOffset;
-        var rotation = 
-            viewMode == VIEWMODE.THIRDPERSON ? 
-            Quaternion.Euler(15f, 0f, 0f) : 
-            Quaternion.LookRotation(controller.transform.forward);
-        transform.rotation = rotation;
-        transform.position = player.transform.position;
-        if (viewMode == VIEWMODE.THIRDPERSON)
+        if (controller)
         {
-            transform.position += offset;
-        }
-        else
-        {
-            transform.Translate(offset);
+            var offset =
+                viewMode == VIEWMODE.THIRDPERSON ?
+                thirdPersonOffset :
+                firstPersonOffset;
+            var rotation =
+                viewMode == VIEWMODE.THIRDPERSON ?
+                Quaternion.Euler(15f, 0f, 0f) :
+                Quaternion.LookRotation(controller.transform.forward);
+            transform.rotation = rotation;
+            transform.position = player.transform.position;
+            if (viewMode == VIEWMODE.THIRDPERSON)
+            {
+                transform.position += offset;
+            }
+            else
+            {
+                transform.Translate(offset);
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        var entrance = other.gameObject.GetComponentInParent<EntrancePortal>();
-        if (entrance)
+        if (controller)
         {
-            controller.Loop();
+            var entrance = other.gameObject.GetComponentInParent<EntrancePortal>();
+            if (entrance)
+            {
+                controller.Loop();
+            }
         }
     }
     

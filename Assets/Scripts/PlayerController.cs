@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private float forwardInput;
     private EntrancePortal entrancePortal;
     private ExitPortal exitPortal;
+    private FollowPlayer followPlayer;
 
     private void Awake()
     {
@@ -36,6 +38,17 @@ public class PlayerController : MonoBehaviour
 
         var offset = transform.position - entrancePortal.transform.position;
         transform.position = exitPortal.transform.position + offset;
+    }
+
+    public void RegisterCameraFollow(FollowPlayer fp)
+    {
+        followPlayer = fp;
+    }
+
+    private void OnDestroy()
+    {
+        followPlayer.player = null;
+        SceneManager.LoadScene(0);
     }
 
     public enum PLAYER
