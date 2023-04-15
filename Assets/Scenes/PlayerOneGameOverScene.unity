@@ -277,7 +277,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4333153663145419948, guid: 3a1074881411f0644aea0864af318a6c, type: 3}
       propertyPath: m_text
-      value: Game Over for Player One!
+      value: 'Player 2 Wins!
+
+        Player 1 Game Over!'
       objectReference: {fileID: 0}
     - target: {fileID: 5323083502108003556, guid: 3a1074881411f0644aea0864af318a6c, type: 3}
       propertyPath: m_Pivot.x
